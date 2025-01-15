@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User and Group Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background: url('ko.jpg') no-repeat center center; /* Add the image */
+            background-size: cover; /* Ensure the image covers the header */
+            color: #fff;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin: 0.5rem 0;
+        }
+
+        header h2 {
+            font-size: 1.2rem;
+            margin: 0.3rem 0;
+            font-weight: 400;
+        }
+
+        header img {
+            max-width: 200px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Command Sections */
+        .command-container {
+            display: flex;
+            align-items: center;
+            background: skyblue; /* Changed to skyblue */
+            margin: 0.5rem auto;
+            padding: 0.5rem 0.8rem;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            width: 70%;
+            max-width: 400px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        /* Zoom Effect on Hover - Changed to grey */
+        .command-container:hover {
+            background-color: #808080; /* Grey on hover */
+            transform: scale(1.05); /* Zoom in slightly on hover */
+        }
+
+        /* Effect when clicked */
+        .command-container:active {
+            background-color: #ff6347; /* Tomato red on click */
+            transform: scale(1.1); /* Slightly enlarge the square */
+            transition: transform 0.2s ease, background-color 0.3s ease;
+        }
+
+        .icon {
+            font-size: 1.5rem;
+            color: #2980b9;
+            margin-right: 1rem;
+        }
+
+        .command-title {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #2c3e50;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        /* History Button */
+        .history-button {
+            display: flex;
+            align-items: center;
+            background: #f39c12; /* Bright color for history button */
+            margin: 0.5rem auto;
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 500px;
+            font-size: 1.2rem; /* Larger font size */
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .history-button:hover {
+            background-color: #e67e22; /* Slightly darker on hover */
+            transform: scale(1.05);
+        }
+
+        .history-button:active {
+            background-color: #d35400; /* Darker on click */
+            transform: scale(1.1);
+        }
+
+        .history-icon {
+            font-size: 1.8rem;
+            color: #fff;
+            margin-right: 1rem;
+        }
+
+        /* Content (Hidden by Default) */
+        .content {
+            display: none;
+            background: #ecf0f1;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .content p {
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+        }
+
+        .content pre {
+            background: #f8f9fa;
+            padding: 0.5rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-family: 'Courier New', Courier, monospace;
+            overflow-x: auto;
+            border: 1px solid #bdc3c7;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(81, 87, 93, 0.9); /* Semi-transparent overlay */
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.9rem;
+            margin-top: 2rem;
+        }
+
+        /* History Section */
+        .history-section {
+            background-color: #f4f4f4;
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .history-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .history-section p {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="ux.jpg" alt="Linux Logo">
+        <h1>LINUX COMMANDS</h1>
+        <h2>"Simplify Linux User and Group Management: Learn Commands with Descriptions and Examples"</h2>
+    </header>
+<!-- Oval Button to Show/Hide All Commands -->
+<button id="toggleAllButton" onclick="toggleAllCommands()">
+    Show All Commands
+</button>
+
+<style>
+    /* Styling for the oval button */
+    #toggleAllButton {
+        display: inline-block;
+        background-color: #3498db; /* Blue background */
+        color: #fff; /* White text */
+        padding: 10px 20px; /* Adjust padding for oval shape */
+        font-size: 1rem; /* Font size */
+        border: none; /* Remove border */
+        border-radius: 50px; /* Oval shape */
+        cursor: pointer; /* Pointer cursor on hover */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        transition: all 0.3s ease; /* Smooth transitions */
+    }
+
+    /* Hover effect */
+    #toggleAllButton:hover {
+        background-color: #2980b9; /* Darker blue on hover */
+        transform: scale(1.05); /* Slight zoom effect */
+    }
+
+    /* Active effect */
+    #toggleAllButton:active {
+        background-color: #1f618d; /* Even darker blue on click */
+        transform: scale(0.98); /* Slight press effect */
+    }
+</style>
+
+<script>
+    // Function to toggle visibility of all commands
+    function toggleAllCommands() {
+        const allContentSections = document.querySelectorAll('.content');
+        const button = document.getElementById('toggleAllButton');
+        
+        // Check if any of the sections are hidden
+        let allVisible = true;
+        allContentSections.forEach(section => {
+            if (section.style.display === 'none' || section.style.display === '') {
+                allVisible = false; // If any section is hidden, change the flag
+            }
+        });
+
+        // Toggle visibility for all sections
+        allContentSections.forEach(section => {
+            section.style.display = allVisible ? 'none' : 'block';
+        });
+
+        // Change button text based on the state
+        button.textContent = allVisible ? 'Show All Commands' : 'Hide All Commands';
+    }
+</script>
+
+
+
+    <main>
+        <!-- History Button -->
+        <div class="history-button" onclick="toggleContent(this)">
+            <i class="fas fa-history history-icon"></i>
+            <p class="command-title">History</p>
+        </div>
+        <div class="content">
+             <p></strong> Linux is an open-source, Unix-like operating system that was created by Linus Torvalds in 1991. It is known for being free, flexible, and secure, making it a popular choice for servers, desktops, and embedded systems. Unlike proprietary systems like Windows or macOS, Linux's source code is publicly available, allowing users to modify and customize it to suit their needs. Linux supports a wide range of software applications and can be used in various environments, from personal computing to enterprise-level systems. It also benefits from a large, active community that contributes to its development and maintenance.</p>
+        </div>
+        <!-- Commands -->
+        <div class="command-container" onclick="toggleContent(this)">
+            
+            <i class="fas fa-cogs icon"></i>
+            <p class="command-title">init</p>
+        </div>
+        <div class="content">
+            <p><strong>Purpose:</strong> Switch the system to a specified runlevel for starting or stopping services.</p>
+            <p><strong>Description:</strong> Initializes the system to a specific runlevel, determining which services are started or stopped.</p>
+            <p><strong>Example:</strong> Switch to runlevel 3 (multi-user, text mode).</p>
+             <pre><code>$ init 3</code></pre>
+             <img src="init.jpg" alt="Alternative text" title="Image Title" width="optional-width" height="optional-height">
+
+        </div>
+
+        <div class="command-container" onclick="toggleContent(this)">
+            <i class="fas fa-user-plus icon"></i>
+            <p class="command-title">useradd</p>
+        </div>
+        <div class="content">
+            <p><strong>Purpose:</strong> Add a new user to the system and configure their environment.</p>
+            <p><strong>Description:</strong> Adds a new user to the system. By default, the command creates a home directory and assigns default shell settings.</p>
+            <p><strong>Example:</strong> Add a user named "newuser" with a home directory and Bash shell:</p>
+            <pre><code>$ useradd -m -s /bin/bash newuser</code></pre>
+            <img src="use.jpg" alt="Alternative text" title="Image Title" width="optional-width" height="optional-height">
+
+        </div>
+
+        <div class="command-container" onclick="toggleContent(this)">
+            <i class="fas fa-user-edit icon"></i>
+            <p class="command-title">usermod</p>
+        </div>
+        <div class="content">
+            <p><strong>Purpose:</strong> Modify the properties of an existing user account.</p>
+            <p><strong>Description:</strong> Modifies user account settings, such as username or group membership.</p>
+            <p><strong>Example:</strong> Rename "oldname" to "newname":</p>
+            <pre><code>$ usermod -l newname oldname</code></pre>
+            <img src="usermod .jpg" alt="Alternative text" title="Image Title" width="optional-width" height="optional-height">
+
+        </div>
+
+        <div class="command-container" onclick="toggleContent(this)">
+            <i class="fas fa-user-times icon"></i>
+            <p class="command-title">userdel</p>
+        </div>
+        <div class="content">
+            <p><strong>Purpose:</strong> Remove a user and optionally their home directory from the system.</p>
+            <p><strong>Description:</strong> Removes a user from the system.</p>
+            <p><strong>Example:</strong> Delete the user and their home directory:</p>
+            <pre><code>$ userdel -r username</code></pre>
+            <img src="userdel  .jpg" alt="Alternative text" title="Image Title" width="optional-width" height="optional-height">
+
+        </div>
+
+        <div class="command-container" onclick="toggleContent(this)">
+            <i class="fas fa-users icon"></i>
+            <p class="command-title">groupadd</p>
+        </div>
+        <div class="content">
+            <p><strong>Purpose:</strong> Create a new group for organizing users.</p>
+            <p><strong>Description:</strong> Creates a new group on the system.</p>
+            <p><strong>Example:</strong> Create a group named "developers":</p>
+            <pre><code>$ groupadd developers</code></pre>
+            <img src="groupadd .jpg" alt="Alternative text" title="Image Title" width="optional-width" height="optional-height">
+
+        </div>
+
+        <div class="command-container" onclick="toggleContent(this)">
+            <i class="fas fa-user-cog icon"></i>
+            <p class="command-title">groupmod</p>
+        </div>
+        <div class="content">
+            <p><strong>Purpose:</strong> Modify an existing group (e.g., rename or change group properties).</p>
+            <p><strong>Description:</strong> Modifies an existing group.</p>
+            <p><strong>Example:</strong> Rename group "developers" to "devs":</p>
+            <pre><code>$ groupmod -n devs developers</code></pre>
+            <img src="groupmod.jpg" alt="Alternative text" title="Image Title" width="optional-width" height="optional-height">
+
+        </div>
+
+        <div class="command-container" onclick="toggleContent(this)">
+            <i class="fas fa-users-slash icon"></i>
+            <p class="command-title">groupdel</p>
+        </div>
+        <div class="content">
+            <p><strong>Purpose:</strong> Remove a group from the system.</p>
+            <p><strong>Description:</strong> Deletes a group from the system.</p>
+            <p><strong>Example:</strong> Remove the group "developers":</p>
+            <pre><code>$ groupdel developers</code></pre>
+            <img src="groupdel .jpg" alt="Alternative text" title="Image Title" width="optional-width" height="optional-height">
+
+        </div>
+
+        <div class="command-container" onclick="toggleContent(this)">
+            <i class="fas fa-key icon"></i>
+            <p class="command-title">passwd</p>
+        </div>
+        <div class="content">
+            <p><strong>Purpose:</strong> Change a user's password.</p>
+            <p><strong>Description:</strong> Changes the password for a user account.</p>
+            <p><strong>Example:</strong> Change the password for "username":</p>
+            <pre><code>$ passwd username</code></pre>
+            <img src="passwd .jpg" alt="Alternative text" title="Image Title" width="optional-width" height="optional-height">
+
+        </div>
+
+        <div class="command-container" onclick="toggleContent(this)">
+            <i class="fas fa-lock icon"></i>
+            <p class="command-title">sudo</p>
+        </div>
+        <div class="content">
+            <p><strong>Purpose:</strong> Execute commands as a superuser or another user with elevated privileges.</p>
+            <p><strong>Description:</strong> Allows a user to execute commands as a superuser or another user.</p>
+            <p><strong>Example:</strong> Update system packages:</p>
+            <pre><code>$ sudo apt update</code></pre>
+            <img src="sudo .jpg" alt="Alternative text" title="Image Title" width="optional-width" height="optional-height">
+
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 Thomson Shiju. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Toggle content visibility
+        function toggleContent(container) {
+            const content = container.nextElementSibling;
+            content.style.display = content.style.display === "block" ? "none" : "block";
+        }
+    </script>
+</body>
+</html>
